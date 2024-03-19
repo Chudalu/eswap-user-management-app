@@ -1,0 +1,70 @@
+<section class="m-5">
+    <h1 class="text-center m-5">Create User</h1>
+    <button class="btn btn-danger px-4" style="float: right;" (click)="goBack()">Back to Management</button>
+
+    <div class="card w-100">
+        <div class="card-header">
+            <h5>Enter User Details</h5>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="form" (submit)="createUser()">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="firstName">First Name <span class="text-danger">*</span> </label><br>
+                        <input class="form-control" type="text" name="firstName" maxlength="100" formControlName="firstName" placeholder="enter first name">
+                        <ul *ngIf="form.get('firstName')?.value && form.get('firstName')?.invalid" class="text-danger m-1">
+                            <li>Invalid First Name</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="lastName">Last Name <span class="text-danger">*</span></label><br>
+                        <input class="form-control" type="text" name="lastName" maxlength="100" formControlName="lastName" placeholder="enter last name">
+                        <ul *ngIf="form.get('lastName')?.value && form.get('lastName')?.invalid" class="text-danger m-1">
+                            <li>Invalid Last Name</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="phoneNumber">Phone Number <span class="text-danger">*</span></label><br>
+                        <input class="form-control" type="phoneNumber" name="phoneNumber" maxlength="11" formControlName="phoneNumber" placeholder="enter phone number">
+                        <ul *ngIf="form.get('phoneNumber')?.value && form.get('phoneNumber')?.invalid" class="text-danger m-1">
+                            <li>Invalid Phone Number</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="email">Email <span class="text-danger">*</span></label><br>
+                        <input class="form-control" type="email" name="email" maxlength="100" formControlName="email" placeholder="enter email">
+                        <ul *ngIf="form.get('email')?.value && form.get('email')?.invalid" class="text-danger m-1">
+                            <li>Invalid email</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="password">Password <span class="text-danger">*</span></label><br>
+                        <div class="input-group">
+                            <input [type]="passwordTextType ? 'text' : 'password'" class="form-control" type="password" name="password" maxlength="100" (input)="passwordValidation($event)" formControlName="password" placeholder="enter password">
+                            <div class="input-group-append">
+                                <div class="input-group-text" style="cursor: pointer;" (click)="togglePasswordTextType()">
+                                    <i class="fa" [ngClass]="{ 'fa-eye-slash': !passwordTextType, 'fa-eye': passwordTextType }"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <ul *ngIf="form.get('password')?.value && passwordHint && passwordHint.length > 0" class="text-danger m-1">
+                            <li *ngFor="let hint of passwordHint">{{hint}}</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 p-2">
+                        <label for="dateOfBirth">Date of birth <span class="text-danger">*</span></label><br>
+                        <input class="form-control" type="date" name="dateOfBirth" formControlName="dateOfBirth">
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-success px-5 my-4" style="float: right;" [disabled]="form.invalid">Create User <i *ngIf="submitting" class="fa fa-spinner fa-pulse"></i></button>
+            </form>
+        </div>
+    </div>
+
+</section>

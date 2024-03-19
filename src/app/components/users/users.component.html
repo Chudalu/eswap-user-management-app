@@ -1,0 +1,97 @@
+<section class="m-3">
+    <h1 class="text-center m-5">Expatswap User Management</h1>
+    <button class="btn btn-primary px-4" style="float: right;" [routerLink]="['/create-user']">Create User</button>
+
+    <div class="card w-100">
+        <div class="card-header w-100">
+            <h5>Search for Users</h5>
+            <small>Use filters below</small>
+        </div>
+        <div class="card-body w-100">
+            <form [formGroup]="form" (submit)="search()">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 p-1">
+                        <label for="firstName">First Name</label><br>
+                        <input class="form-control" type="text" name="firstName" maxlength="100" formControlName="firstName" placeholder="enter first name">
+                    </div>
+
+                    <div class="col-md-3 col-sm-12 p-1">
+                        <label for="lastName">Last Name</label><br>
+                        <input class="form-control" type="text" name="lastName" maxlength="100" formControlName="lastName" placeholder="enter last name">
+                    </div>
+
+                    <div class="col-md-3 col-sm-12 p-1">
+                        <label for="email">Email</label><br>
+                        <input class="form-control" type="email" name="email" maxlength="100" formControlName="email" placeholder="enter email">
+                    </div>
+
+                    <div class="col-md-3 col-sm-12 p-1">
+                        <label for="startDate">Start Date</label><br>
+                        <input class="form-control" type="date" name="startDate" maxlength="100" formControlName="startDate">
+                    </div>
+
+                    <div class="col-md-3 col-sm-12 p-1">
+                        <label for="endDate">End Date</label><br>
+                        <input class="form-control" type="date" name="endDate" maxlength="100" formControlName="endDate">
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-success px-5 my-4" style="float: right;">Search <i *ngIf="searching" class="fa fa-spinner fa-pulse"></i></button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div *ngIf="!users || !(users.length > 0)" class="card w-100">
+        <div class="text-center m-5 py-5">
+            <h3> No user found</h3>
+        </div>
+    </div>
+
+    <div *ngIf="users && users.length > 0" class="card w-100">
+        <div class="card-body">
+            <div>
+                <form [formGroup]="itemsForm" style="float: right;">
+                    <select type="number" value="" formControlName="itemsPerPage" (input)="setItemsPerPage($event)">
+                        <option value="10" [selected]="true">10</option>
+                        <option value="30"> 30</option>
+                        <option value="50"> 50</option>
+                        <option value="100"> 100</option>
+                        <option value="200"> 200</option>
+                    </select>
+                </form>
+            </div>
+            <div style="overflow: hidden; overflow-x: auto; width: 100%;">
+                <table class="table">
+                    <thead class="text-secondary">
+                        <th>S/N</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Date of Birth</th>
+                        <th>Creation Date</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users ||[] | paginate:{itemsPerPage: itemsOnPage, currentPage: p}; let i=index">
+                            <td>{{ (i+1) + ((p-1)*itemsOnPage) }}</td>
+                            <td>{{ user.firstName | titlecase }}</td>
+                            <td>{{ user.lastName | titlecase }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phoneNumber }}</td>
+                            <td>{{ user.dateOfBirth | date }}</td>
+                            <td>{{ user.createdAt | date }}</td>
+                            <td><button class="btn btn-danger btn-sm px-4" (click)="deleteUser(user.id)">Delete <i *ngIf="deleting == user.id" class="fa fa-spinner fa-pulse"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="py-2 px-2">
+                <pagination-controls (pageChange)="setCurrentPage($event)"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</section>
